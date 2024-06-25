@@ -12,13 +12,15 @@ document.addEventListener("DOMContentLoaded", function(event) {
     let urunAdi = document.getElementById("urunAdi").value;
     urunAdi     = urunAdi.trim();
     let isAdded = urunler.includes(urunAdi);
-
     if (isAdded) {
       alert("daha önce ürün eklendi");
+    } else if (urunAdi === "") {
+      alert("lütfen ürün yazın ");
     } else {
       urunler.unshift(urunAdi);
       localStorage.setItem("urunler", JSON.stringify(urunler));
       listele(urunler);
+      document.getElementById("urunAdi").value = "";
     }
   });
 
@@ -44,7 +46,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
   });
 
   function listele(urunler) {
-    if (urunler == null || Array.isArray(urunler) && !urunler.length) {
+    if (urunler == null || (Array.isArray(urunler) && !urunler.length)) {
       let urunListesi       = document.getElementById("urunListesi");
       let liElement         = document.createElement("li");
       liElement.className   = "list-group-item text-bg-warning text-white";
