@@ -49,15 +49,17 @@ document.addEventListener("DOMContentLoaded", function() {
   });
 
   document.body.addEventListener("click", function(event) {
-    let element = event.target;
+    let element          = event.target;
     // let addPlus2 = element.matches(".add-product");
-    let addPlus = element.className.includes("add-product");
-    let urunAdi = false;
-    if (addPlus &&
-        idExistsUrunler(element.id) && // urun varsa ekleme yapıla billmesi için önce burda id kontrol ediyorum sonra bir altta urun adini cekerken olmayan bir id yollamamak için id kontrol ediyorum
-        (urunAdi = urunler[element.id]) &&
-        !isNameExistsIcındekiler(urunAdi))  // içindekiler arrayı içinde  bu ürün adı var mı yokmu kontrolü için  altta funcionu olusturdum baştaki ünlemle tanımlanmamışsa eklenmemişse undefined döndürücek
-     {
+    let addPlus          = element.className.includes("add-product");
+    let elementProductID = element.className.includes("delete-product-content");
+    // let urunAdi          = false;
+    if (addPlus
+        // idExistsUrunler(element.id) && // urun varsa ekleme yapıla billmesi için önce burda id kontrol ediyorum sonra bir altta urun adini cekerken olmayan bir id yollamamak için id kontrol ediyorum
+        // (urunAdi = urunler[element.id]) &&
+        // !isNameExistsIcındekiler(urunAdi)
+    )  // içindekiler arrayı içinde  bu ürün adı var mı yokmu kontrolü için  altta funcionu olusturdum baştaki ünlemle tanımlanmamışsa eklenmemişse undefined döndürücek
+    {
       let product = {
         id    : element.id,
         miktar: "",
@@ -66,25 +68,25 @@ document.addEventListener("DOMContentLoaded", function() {
       icindeki.push(product);
       urunListele(icindeki);
       yemek.icindekiler             = icindeki;
-       let parentLi = element.parentElement;
-       parentLi.style.textDecoration = "line-through"; // tıklananın üstünü çizme
-       parentLi.style.opacity = "0.4";
-       element.pointerEvents = "none";// + işaretini  geçersiz kılma
-       element.style.opacity = "0.5"; // tıkladıktan sonra  rengini şeffaflaştırma
+      let parentLi                  = element.parentElement;
+      parentLi.style.textDecoration = "line-through"; // tıklananın üstünü çizme
+      parentLi.style.opacity        = "0.4";
+      element.pointerEvents         = "none";// + işaretini  geçersiz kılma
+      element.style.opacity         = "0.5"; // tıkladıktan sonra  rengini şeffaflaştırma
+      console.log(yemek.icindekiler);
     }
+
+
   });
 
   function isNameExistsIcındekiler(name) {
-    // icindeki.find(function(item) { // icindeki array içinde find bul diyorum calback function ile yada arrow ile tanımlayarak yapacağım 75.satırdaki ve 84. satırdaki aynı birisi
-    //
+    //  icindeki.find(function(item) { // icindeki array içinde find bul diyorum calback function ile yada arrow ile tanımlayarak yapacağım 75.satırdaki ve 84. satırdaki aynı birisi
     //   if (item.name === name) {
     //     return false;
     //   }else{
     //     return true;
     //   }
     // });
-
-    console.log(icindeki.find(item => item.name === name));
     return icindeki.find(item => item.name === name) !== undefined; // arrow ile yapılan bulamazsa yani undefined değilse tanımlanmamış değilse tanımlanmışsa dedik
   }
 
@@ -110,6 +112,7 @@ document.addEventListener("DOMContentLoaded", function() {
         let inputElement    = document.createElement("input");
         liElement.className = "d-flex justify-content-between";
         iElement.className  = "bi bi-trash me-3 delete-product-content text-danger";
+        iElement.setAttribute("data-id", urun.id);
         labelElement.setAttribute("for", "miktar-" + urun.id);
         labelElement.textContent = urun.name;
         inputElement.placeholder = "miktar";
@@ -142,7 +145,7 @@ document.addEventListener("DOMContentLoaded", function() {
         liElement.textContent = urun;
         iElement.className    = "bi bi-plus-lg add-product float-end";
         iElement.style        = "color: #e33e3e; cursor:pointer;";
-        iElement.id           = index;
+        iElement.id           = urun.id;
         urunListesi.appendChild(liElement);
         liElement.appendChild(iElement);
       });
